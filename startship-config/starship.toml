@@ -1,0 +1,189 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$os$username$hostname$localip$directory$git_branch$git_status$fill$gcloud$kubernetes$docker_context$terraform${custom.tailscale}${custom.hetzner}$sudo$python$nodejs$rust$golang
+$character"""
+
+palette = 'gruvbox_dark'
+
+[palettes.gruvbox_dark]
+color_fg0 = '#fbf1c7'
+color_bg1 = '#3c3836'
+color_bg3 = '#665c54'
+color_blue = '#458588'
+color_aqua = '#689d6a'
+color_green = '#98971a'
+color_orange = '#d65d0e'
+color_purple = '#b16286'
+color_red = '#cc241d'
+color_yellow = '#d79921'
+
+[os]
+disabled = false
+style = "bg:color_orange fg:color_fg0"
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = " "
+Gentoo = " "
+HardenedBSD = "󰞇 "
+Illumos = "󰈸 "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = " "
+openSUSE = " "
+OracleLinux = "󰆊 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Solus = " "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
+
+[username]
+show_always = true
+style_user = "bg:color_orange fg:color_fg0"
+style_root = "bg:color_orange fg:color_fg0"
+format = '[ $user ]($style)'
+
+[hostname]
+ssh_only = false
+format = "[$hostname]($style) "
+style = "bold dim white"
+
+[localip]
+ssh_only = false
+format = "[@$localipv4]($style) "
+style = "bold dim white"
+disabled = false
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+format = "[$path]($style) "
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:color_aqua"
+format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
+
+[git_status]
+style = "bg:color_aqua"
+format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
+
+[fill]
+symbol = " "
+
+[gcloud]
+format = "on [☁️ $project( \\($region\\))]($style) "
+style = "bold blue"
+disabled = false
+
+[kubernetes]
+disabled = false
+symbol = "☸ "
+format = "[$symbol$context(::$namespace)]($style) "
+style = "bold cyan"
+
+[[kubernetes.contexts]]
+context_pattern = ".*(prod|production).*"
+context_alias = "prod"
+style = "bold red"
+
+[[kubernetes.contexts]]
+context_pattern = "gke_.*_(?P<cluster>[\\w-]+)"
+context_alias = "gke-$cluster"
+style = "bold blue"
+
+[[kubernetes.contexts]]
+context_pattern = ".*(hetzner|hcloud|hz).*"
+context_alias = "hetzner"
+style = "bold orange"
+
+[docker_context]
+format = "[docker:$context]($style) "
+style = "blue bold"
+only_with_files = false
+
+[terraform]
+symbol = "tofu:"
+format = "[$symbol$workspace]($style) "
+style = "bold 105"
+commands = [["tofu", "version"], ["terraform", "version"]]
+
+[custom.tailscale]
+command = "tailscale ip -4 | head -n 1 | sed 's/^/ts:/'"
+when = "command -v tailscale >/dev/null 2>&1 && tailscale ip -4 >/dev/null 2>&1"
+style = "bold purple"
+format = "[$output]($style) "
+
+[custom.hetzner]
+command = "echo '🇩🇪 Hetzner'"
+when = "hostname | grep -q 'hz\\|hetzner'"
+style = "bold orange"
+format = "[$output]($style) "
+
+[sudo]
+disabled = false
+symbol = "sudo"
+style = "bold red"
+format = "[$symbol]($style) "
+
+[python]
+symbol = "🐍 "
+pyenv_prefix = "venv "
+
+[nodejs]
+symbol = "󰎙 "
+style = "bold green"
+
+[rust]
+symbol = "🦀 "
+
+[golang]
+symbol = " "
+
+[cmd_duration]
+min_time = 500
+style = "bg:color_bg1 fg:color_fg0"
+format = "[[ 󱎫 $duration ]($style)]($style)"
+
+[time]
+disabled = true
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[](bold fg:color_green) '
+error_symbol = '[](bold fg:color_red) '
